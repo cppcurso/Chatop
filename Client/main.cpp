@@ -27,7 +27,6 @@ void send(Client* c, Message* message) {
     //if (u != NULL) {
         //message->user = *u;
         c->sendClient(message);
-        std::cout << "Mandado" << '\n';
     //} else {
         //std::cerr << "Usuario no encontrado" << '\n';
     //}
@@ -35,10 +34,15 @@ void send(Client* c, Message* message) {
 
 void receiving(Client* c) {
     while(true) {
-        Message* message = c->receive();
+        Message* message = new Message;
+        if (message != NULL) {
+            message = c->receive();
+            std::cout << message->text << '\n';
+        } else {
+            std::cout << "No se pudo enviar" << '\n';
+        }
+        break;
         //contacts.add(message);
-        std::cout << message->text << '\n';
-        std::cout << "Recibido" << '\n';
     }
 }
 
@@ -53,7 +57,6 @@ void sender(Client* c) {
             //sendToAll(c, message); // Enviar a todos
         //} else {
             send(c, message); // Enviar a uno
-            std::cout << "mandado2" << '\n';
         //}
 
     }
