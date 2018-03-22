@@ -2,20 +2,21 @@
 #include <vector>
 
 
-class Contacts {
-    std::vector<User*> user;
+struct Contacts {
+    std::vector<User*> users;
 
-    void add(User user) {
-      string nick;
-        std::cout << "Nuevo usuario, nick?: " << '\n';
-        getline(cin, nick);
-        users.push_back(new User(nick, user.address));
+    void add(Message* m) {
+        string nick = m->getNick();
+        if (get(nick) != NULL) return; // El usuario ya está guardado
+        users.push_back(new User(nick, m->user.address));
     }
-    string get(string nick) {
-        for(auto& u : users) {
-          if (u->nick == nick) {
-            return u->
-          }
+
+    User* get(string nick) {
+        for (auto& u : users) {
+            if (u->nick == nick) {
+                return u;
+            }
         }
+        return NULL;
     }
 };

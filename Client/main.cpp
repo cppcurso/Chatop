@@ -24,7 +24,7 @@ void sendToAll(Client* c, Message* message) {
     message->text = myNick + ">" + message->text;
     for (auto& u : contacts.users) {
         message->user = *u;
-        c->send(message);
+        c->sendClient(message);
     }
 }
 
@@ -76,7 +76,7 @@ int main(int argc, char const *argv[]) {
 
     // Inicialización
     Client* c = new Client;
-    if (!c->init()) {
+    if (!c->initClient()) {
         std::cout << "Error de conexión" << '\n';
         return -1;
     }

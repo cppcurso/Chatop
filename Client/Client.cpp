@@ -51,4 +51,8 @@ public:
 
         send(sock, m, strlen(m), 0);
     }
+
+    void end() {
+        close(sock);
+    }
 };
