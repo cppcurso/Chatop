@@ -16,7 +16,7 @@ public:
         sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock < 0) return false;
 
-        string ip = "172.17.3.104";
+        string ip = "172.17.3.78";
         //Dirección del servidor:
 
         memset(&serverAddress, '0', sizeof(serverAddress)); // Limpia estructura serverAddress

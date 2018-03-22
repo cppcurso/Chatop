@@ -20,31 +20,25 @@ string getNick() {
     return nick;
 }
 
-void sendToAll(Client* c, Message* message) {
-    message->text = myNick + ">" + message->text;
-    for (auto& u : contacts.users) {
-        message->user = *u;
-        c->sendClient(message);
-    }
-}
+void send(Client* c, Message* message) {
+    //message->text = myNick + ">" + message->text; // Enviar a uno
 
-void send(Client* c, Message* message, string nick) {
-    message->text = myNick + ">" + message->text; // Enviar a uno
-
-    User* u = contacts.get(nick);
-    if (u != NULL) {
-        message->user = *u;
+    //User* u = contacts.get(nick);
+    //if (u != NULL) {
+        //message->user = *u;
         c->sendClient(message);
-    } else {
-        std::cerr << "Usuario no encontrado" << '\n';
-    }
+        std::cout << "Mandado" << '\n';
+    //} else {
+        //std::cerr << "Usuario no encontrado" << '\n';
+    //}
 }
 
 void receiving(Client* c) {
     while(true) {
         Message* message = c->receive();
-        contacts.add(message);
-        std::cout << message->getNick() << " dice " << message->getMessage() << '\n';
+        //contacts.add(message);
+        std::cout << message->text << '\n';
+        std::cout << "Recibido" << '\n';
     }
 }
 
@@ -54,12 +48,13 @@ void sender(Client* c) {
         message->text = getMessage();
 
         if(message->text == "s") break;
-        string nick = getNick();
-        if(nick == "t") {
-            sendToAll(c, message); // Enviar a todos
-        } else {
-            send(c, message, nick); // Enviar a uno
-        }
+        //string nick = getNick();
+        //if(nick == "t") {
+            //sendToAll(c, message); // Enviar a todos
+        //} else {
+            send(c, message); // Enviar a uno
+            std::cout << "mandado2" << '\n';
+        //}
 
     }
     terminate();
