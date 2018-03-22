@@ -9,23 +9,28 @@
 
 class Client {
     int sock;
+    struct sockaddr_in serverAddress;
 public:
     bool initClient() {
         //Crear el socket:
         sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock < 0) return false;
 
+        string ip = "172.17.3.104";
         //Dirección del servidor:
-        struct sockaddr_in serverAddress;
+
         memset(&serverAddress, '0', sizeof(serverAddress)); // Limpia estructura serverAddress
         serverAddress.sin_family = AF_INET; // Address Family IPv4
         serverAddress.sin_port = htons(port); // Puerto de Endian de Host a Endian de Network
+
+        if(inet_aton(ip.c_str(), &serverAddress.sin_addr) <= 0) {
+            return false;
+        }
 
         return true;
     }
 
     bool connection() {
-        struct sockaddr_in serverAddress;
         if (connect(sock, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) < 0) return false;
         return true;
     }
