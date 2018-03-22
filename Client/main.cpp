@@ -21,15 +21,7 @@ string getNick() {
 }
 
 void send(Client* c, Message* message) {
-    //message->text = myNick + ">" + message->text; // Enviar a uno
-
-    //User* u = contacts.get(nick);
-    //if (u != NULL) {
-        //message->user = *u;
-        c->sendClient(message);
-    //} else {
-        //std::cerr << "Usuario no encontrado" << '\n';
-    //}
+    c->sendClient(message);
 }
 
 void receiving(Client* c) {
@@ -42,7 +34,6 @@ void receiving(Client* c) {
             std::cout << "No se pudo enviar" << '\n';
         }
         break;
-        //contacts.add(message);
     }
 }
 
@@ -52,13 +43,7 @@ void sender(Client* c) {
         message->text = getMessage();
 
         if(message->text == "s") break;
-        //string nick = getNick();
-        //if(nick == "t") {
-            //sendToAll(c, message); // Enviar a todos
-        //} else {
-            send(c, message); // Enviar a uno
-        //}
-
+        send(c, message); // Enviar a uno
     }
     terminate();
 }
@@ -84,15 +69,14 @@ int main(int argc, char const *argv[]) {
         return -1;
     }
 
-
     std::cout << "Hola " << myNick << ", bienvenido al Chat OP" << '\n';
     std::cout << "(introduce s para salir)" << '\n';
 
     thread receiver(receiving, c);
-
     sender(c);
 
     receiver.join();
+
     // Finalización
     c->end();
 }
