@@ -19,7 +19,7 @@ class NetworkManager {
 public:
     static const int maxConections = 8;
     //static int count;
-    Contacts contacts;
+
     bool init() {
         // Crear socket
         listeningSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -51,7 +51,7 @@ public:
         return true;
     }
 
-    int acceptConnection(){
+    int acceptConnection(Contacts* contacts){
         int commSocket;
         struct sockaddr_in address;
         std::cout << "Esperando conexiones..." << '\n';
@@ -60,7 +60,7 @@ public:
 
         User* u = new User;
         u->address = address;
-        contacts.users.push_back(u);
+        contacts->users.push_back(u);
         // sockets.push_back(commSocket);
 
         cout << "Recibida conexión de " << inet_ntoa(address.sin_addr) << '\n';
@@ -86,13 +86,13 @@ public:
         }
     }
 
-    void sendMessage(Message* message, std::vector<User*> u, int sock) {
+    void sendMessage(Message* message, int sock, Contacts* contacts) {
         struct sockaddr_in address;
         const char* m = message->text.c_str();
-        for (size_t i = 0; i < u.size(); i++) {
-            address = u[i]->address;
+        for (size_t i = 0; i < contacts->users.size(); i++) {
+            address = contacts->users[i]->address;
             send(sock, m, strlen(m), 0);
-            cout<<"¡Enviado! \n";
+            cout<<"¡Enviado!"<< m <<'\n';
         }
     }
 
