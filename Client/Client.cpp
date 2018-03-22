@@ -40,7 +40,6 @@ public:
         if (n > 0) {
             Message* m = new Message;
             m->text = buffer;
-            m->user.address = address;
             return m;
         } else {
             return NULL;

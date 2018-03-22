@@ -1,5 +1,6 @@
 static const int port = 8888;
-#include "Client.cpp"
+
+#include "Contacts.cpp"
 #include <thread>
 
 Contacts contacts;
@@ -41,7 +42,7 @@ void send(Client* c, Message* message, string nick) {
 
 void receiving(Client* c) {
     while(true) {
-        Message* message = c->recieve();
+        Message* message = c->receive();
         contacts.add(message);
         std::cout << message->getNick() << " dice " << message->getMessage() << '\n';
     }
