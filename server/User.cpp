@@ -4,7 +4,7 @@ struct User {
     string nick;
     struct sockaddr_in address;
     string ip;
-
+    int sock;
     User() {}
 
     User(string n, struct sockaddr_in a) : nick(n), address(a) {}

@@ -3,14 +3,15 @@
 #include <thread>
 
 void communication(int sock, NetworkManager* nm, Contacts* contacts){
+    Message* m = new Message;
     while(true){
-        Message* m = new Message;
         m = nm->recieveMessage(sock);
         if(m != NULL)
             nm->sendMessage(m, sock, contacts);
+
         else{
-         std::cout << "No se pudo enviar." << '\n';
-         break;
+             std::cout << "Contacto desconectado." << '\n';
+             return;
         }
     }
 }
@@ -30,6 +31,7 @@ int main(){
             thread* t = new thread(communication, sock, nm, contacts);
 
             threads.push_back(t);
+            std::cout << threads.size() << '\n';
         }
     }
 }

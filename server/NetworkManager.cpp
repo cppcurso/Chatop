@@ -57,12 +57,15 @@ public:
         std::cout << "Esperando conexiones..." << '\n';
         socklen_t addrlen = sizeof(address);
         commSocket = accept(listeningSocket, (struct sockaddr *)&address, &addrlen); //client address
-
+        for (size_t i = 0; i < contacts->users.size(); i++) {
+            if (strcmp(inet_ntoa(contacts->users[i]->address.sin_addr), inet_ntoa(address.sin_addr)) == 0){
+                return commSocket; // comparas las dos direcciones (previa transformación a string)
+            }
+        }
         User* u = new User;
         u->address = address;
+        u->sock = commSocket;
         contacts->users.push_back(u);
-        // sockets.push_back(commSocket);
-
         cout << "Recibida conexión de " << inet_ntoa(address.sin_addr) << '\n';
         return commSocket;
     }
@@ -92,7 +95,7 @@ public:
         for (size_t i = 0; i < contacts->users.size(); i++) {
             address = contacts->users[i]->address;
             send(sock, m, strlen(m), 0);
-            cout<<"¡Enviado!"<< m <<'\n';
+            cout<<"¡Enviado! Mensaje: "<< m <<'\n';
         }
     }
 
