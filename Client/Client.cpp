@@ -47,7 +47,7 @@ public:
         }
     }
 
-    void send(Message* message) {
+    void sendClient(Message* message) {
         const char* m = message->text.c_str();
 
         send(sock, m, strlen(m), 0);
