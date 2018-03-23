@@ -7,8 +7,6 @@ static const int port = 8888;
 
 Contacts contacts;
 string myNick;
-mutex mtx;
-mutex mtx2;
 
 
 string getMessage() {
