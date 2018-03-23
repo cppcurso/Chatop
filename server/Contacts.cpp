@@ -6,7 +6,7 @@ struct Contacts {
     void add(Message* m) {
         string nick = m->getNick();
         if (get(nick) != NULL) return; // El usuario ya está guardado
-        users.push_back(new User(nick, m->user.address));
+        users.push_back(new User(nick, m->user->address));
     }
 
     User* get(string nick) {
