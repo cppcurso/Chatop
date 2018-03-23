@@ -8,7 +8,7 @@ string myNick;
 
 string getMessage() {
     string message;
-    std::cout << myNick + " dice ";
+    std::cout << myNick + " dice " + '\n';
     getline(cin, message);
     return message;
 }
