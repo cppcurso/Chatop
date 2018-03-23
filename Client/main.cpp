@@ -2,13 +2,18 @@ static const int port = 8888;
 
 #include "Contacts.cpp"
 #include <thread>
+#include <mutex>
+#include <unistd.h>
 
 Contacts contacts;
 string myNick;
+mutex mtx;
+mutex mtx2;
+
 
 string getMessage() {
     string message;
-    std::cout << myNick + " dice " + '\n';
+    std::cout << myNick + " >> ";
     getline(cin, message);
     return message;
 }
@@ -27,6 +32,8 @@ void send(Client* c, Message* message) {
 void receiving(Client* c) {
     while(true) {
         Message* message = new Message;
+
+
         if (message != NULL) {
             message = c->receive();
             std::cout << message->text << '\n';
@@ -39,11 +46,13 @@ void receiving(Client* c) {
 
 void sender(Client* c) {
     Message* message = new Message;
-    while (true) {
-        message->text = getMessage();
 
+    while (true) {
+
+        message->text = getMessage();
         if(message->text == "s") break;
         send(c, message); // Enviar a uno
+        sleep(1);
     }
     terminate();
 }
@@ -71,11 +80,13 @@ int main(int argc, char const *argv[]) {
 
     std::cout << "Hola " << myNick << ", bienvenido al Chat OP" << '\n';
     std::cout << "(introduce s para salir)" << '\n';
-
+    thread sender2 (sender ,c);
     thread receiver(receiving, c);
-    sender(c);
+
+    sender2.join();
 
     receiver.join();
+
 
     // Finalización
     c->end();
