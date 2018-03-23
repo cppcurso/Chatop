@@ -5,7 +5,7 @@
 User* findUser(int sock, Contacts* contacts){
     for (size_t i = 0; i < contacts->users.size(); i++){
         if(sock != contacts->users[i]->sock){
-            return contacts->users[i]
+            return contacts->users[i];
         }
     }
 }
