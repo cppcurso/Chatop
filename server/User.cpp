@@ -6,7 +6,9 @@ struct User {
     string ip;
     int sock;
     bool conect;
-    User() {}
+    User() {
+        nick = "user";
+    }
 
     User(string n, struct sockaddr_in a) : nick(n), address(a) {}
 

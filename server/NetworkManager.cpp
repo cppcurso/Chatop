@@ -115,7 +115,7 @@ public:
         string m = "";
         m += message->user->nick;
         m+= " dice ";
-        m += message->getMessage();
+        m += message->text;
         if (message->user->conect){
             send(message->user->sock, m.c_str(), m.size(), 0);
             cout<<"¡Enviado! Mensaje de "<<inet_ntoa(message->user->address.sin_addr)<< " : "<< m <<'\n';
