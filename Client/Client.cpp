@@ -16,7 +16,7 @@ public:
         sock = socket(AF_INET, SOCK_STREAM, 0);
         if (sock < 0) return false;
 
-        string ip = "172.17.3.78";
+        string ip = "172.17.3.175";
         //Dirección del servidor:
 
         memset(&serverAddress, '0', sizeof(serverAddress)); // Limpia estructura serverAddress
@@ -37,18 +37,19 @@ public:
 
     Message* receive() {
         const int bufferSize = 1024;
-        char buffer[bufferSize] = {0};
+        while(true) {
+            char buffer[bufferSize] = {0};
 
-        // Recibir mensaje
-        int n = read(sock, buffer, bufferSize);
-
-        if (n > 0) {
+            while(recv(sock, buffer, sizeof(buffer), 0) <= 0);
+            std::cout << "Mensaje recibido: " << buffer << '\n';
+        }
+        /*if (n > 0) {
             Message* m = new Message;
             m->text = buffer;
             return m;
         } else {
             return NULL;
-        }
+        }*/
     }
 
     void sendClient(Message* message) {
