@@ -3,7 +3,7 @@ using namespace std;
 
 struct Message {
     string text;
-    User user;
+    User* user;
 
     string getMessage() {
         string m = "";
@@ -20,7 +20,7 @@ struct Message {
     string getNick() {
         string n = "";
         for (size_t i = 0; i < text.size(); i++) {
-            if (text[i] == '>') break;
+            if (text[i] == '.') break;
             n += text[i];
         }
         return n;
