@@ -44,7 +44,9 @@ void receiving(Client* c) {
 
 void sender(Client* c) {
     Message* message = new Message;
-
+    Message* m = new Message;
+    m->text = myNick;
+    send(c, m);
     while (true) {
 
         message->text = getMessage();
