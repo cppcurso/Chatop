@@ -41,7 +41,7 @@ public:
             char buffer[bufferSize] = {0};
 
             while(recv(sock, buffer, sizeof(buffer), 0) <= 0);
-            std::cout << "Mensaje recibido: " << buffer << '\n';
+            std::cout << message->user.nick << " >> " << buffer << '\n';
         }
         /*if (n > 0) {
             Message* m = new Message;
