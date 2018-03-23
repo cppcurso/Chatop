@@ -114,7 +114,7 @@ public:
     void sendMessage(Message* message) {
         string m = "";
         m += message->user->nick;
-        m+= " dice ";
+        m+= ".";
         m += message->text;
         if (message->user->conect){
             send(message->user->sock, m.c_str(), m.size(), 0);
