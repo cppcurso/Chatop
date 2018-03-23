@@ -10,7 +10,7 @@ struct Message {
         bool found = false;
         for (size_t i = 0; i < text.size(); i++) {
             if (found) m += text[i];
-            if (text[i] == '>') {
+            if (text[i] == '.') {
                 found = true;
             }
         }

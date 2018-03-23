@@ -74,6 +74,8 @@ public:
             if (compareIP(inet_ntoa(address.sin_addr), inet_ntoa(contacts->users[i]->address.sin_addr))){
                 contacts->users[i]->conect = true;
                 contacts->users[i]->sock = commSocket;
+                Message* m = recieveMessage(commSocket);
+                contacts->users[i]->nick = m->text;
                 cout << "Recibida conexión de " << inet_ntoa(address.sin_addr) << '\n';
                 return commSocket; // comparas las dos direcciones (previa transformación a string)
             }
@@ -82,6 +84,8 @@ public:
         u->address = address;
         u->sock = commSocket;
         u->conect = true;
+        Message* m = recieveMessage(commSocket);
+        u->nick = m->text;
         contacts->users.push_back(u);
         cout<<"users: "<<contacts->users.size()<<endl;
         cout << "Recibida conexión de " << inet_ntoa(address.sin_addr) << '\n';
@@ -109,10 +113,9 @@ public:
 
     void sendMessage(Message* message) {
         string m = "";
-        m += message->getNick();
+        m += message->user->nick;
         m+= " dice ";
         m += message->getMessage();
-         message->text.c_str();
         if (message->user->conect){
             send(message->user->sock, m.c_str(), m.size(), 0);
             cout<<"¡Enviado! Mensaje de "<<inet_ntoa(message->user->address.sin_addr)<< " : "<< m <<'\n';
