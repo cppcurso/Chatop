@@ -27,6 +27,16 @@ void send(Client* c, Message* message) {
     c->sendClient(message);
 }
 
+string textProcessorMessage(string text) {
+    int j;
+    string newText;
+    for (size_t i = 0; i < text.size(); i++) {
+        if (text[i] == '.') j = i;
+        if(i > j) newText += text[i];
+    }
+    return newText;
+}
+
 void receiving(Client* c) {
     while(true) {
         Message* message = new Message;
@@ -34,7 +44,7 @@ void receiving(Client* c) {
 
         if (message != NULL) {
             message = c->receive();
-            std::cout << message->text << '\n';
+            std::cout << textProcessorMessage(message->text) << '\n';
         } else {
             std::cout << "No se pudo enviar" << '\n';
         }
