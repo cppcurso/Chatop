@@ -108,9 +108,13 @@ public:
     }
 
     void sendMessage(Message* message) {
-        const char* m = message->text.c_str();
+        string m = "";
+        m += message->getNick();
+        m+= " dice ";
+        m += message->getMessage();
+         message->text.c_str();
         if (message->user->conect){
-            send(message->user->sock, m, strlen(m), 0);
+            send(message->user->sock, m.c_str(), m.size(), 0);
             cout<<"¡Enviado! Mensaje de "<<inet_ntoa(message->user->address.sin_addr)<< " : "<< m <<'\n';
         }
     }
