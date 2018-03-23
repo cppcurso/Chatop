@@ -51,17 +51,29 @@ public:
         return true;
     }
 
+    bool compareIP(string ip1, string ip2){
+        string storageIp1 = "";
+        string storageIp2 = "";
+        int i = 9;
+        while(i<ip1.size() || i<ip2.size()) {
+            storageIp1 += ip1[i];
+            storageIp2 += ip2[i];
+            i++;
+        }return atoi(storageIp1.c_str())==atoi(storageIp2.c_str());
+    }
+
     int acceptConnection(Contacts* contacts){
         int commSocket;
         struct sockaddr_in address;
         std::cout << "Esperando conexiones..." << '\n';
         socklen_t addrlen = sizeof(address);
         commSocket = accept(listeningSocket, (struct sockaddr *)&address, &addrlen); //client address
-        cout<<"s"<<commSocket<<endl;
         for (int i = 0; i < contacts->users.size(); i++) {
             cout << "i: "<<i<<"IP: "<<inet_ntoa(contacts->users[i]->address.sin_addr)<<endl;
-            if (strcmp(inet_ntoa(contacts->users[i]->address.sin_addr), inet_ntoa(address.sin_addr)) > 0){
+            cout<<inet_ntoa(address.sin_addr)<<endl;
+            if (compareIP(inet_ntoa(address.sin_addr), inet_ntoa(contacts->users[i]->address.sin_addr))){
                 contacts->users[i]->conect = true;
+                contacts->users[i]->sock = commSocket;
                 cout << "Recibida conexión de " << inet_ntoa(address.sin_addr) << '\n';
                 return commSocket; // comparas las dos direcciones (previa transformación a string)
             }
@@ -100,8 +112,6 @@ public:
         if (message->user->conect){
             send(message->user->sock, m, strlen(m), 0);
             cout<<"¡Enviado! Mensaje de "<<inet_ntoa(message->user->address.sin_addr)<< " : "<< m <<'\n';
-
-
         }
     }
 
