@@ -57,15 +57,21 @@ public:
         std::cout << "Esperando conexiones..." << '\n';
         socklen_t addrlen = sizeof(address);
         commSocket = accept(listeningSocket, (struct sockaddr *)&address, &addrlen); //client address
-        for (size_t i = 0; i < contacts->users.size(); i++) {
-            if (strcmp(inet_ntoa(contacts->users[i]->address.sin_addr), inet_ntoa(address.sin_addr)) == 0){
+        cout<<"s"<<commSocket<<endl;
+        for (int i = 0; i < contacts->users.size(); i++) {
+            cout << "i: "<<i<<"IP: "<<inet_ntoa(contacts->users[i]->address.sin_addr)<<endl;
+            if (strcmp(inet_ntoa(contacts->users[i]->address.sin_addr), inet_ntoa(address.sin_addr)) > 0){
+                contacts->users[i]->conect = true;
+                cout << "Recibida conexión de " << inet_ntoa(address.sin_addr) << '\n';
                 return commSocket; // comparas las dos direcciones (previa transformación a string)
             }
         }
         User* u = new User;
         u->address = address;
         u->sock = commSocket;
+        u->conect = true;
         contacts->users.push_back(u);
+        cout<<"users: "<<contacts->users.size()<<endl;
         cout << "Recibida conexión de " << inet_ntoa(address.sin_addr) << '\n';
         return commSocket;
     }
@@ -77,7 +83,7 @@ public:
         // Recibir mensaje
         //int n = recvfrom(commSocket, buffer, bufferSize, 0, (struct sockaddr *)&address, &addrlen);
 
-        int n = read(sock, buffer, bufferSize);
+        int n = recv(sock, buffer, sizeof(buffer), 0);
 
         if (n > 0) {
             Message* m = new Message;
@@ -89,13 +95,13 @@ public:
         }
     }
 
-    void sendMessage(Message* message, int sock, Contacts* contacts) {
-        struct sockaddr_in address;
+    void sendMessage(Message* message) {
         const char* m = message->text.c_str();
-        for (size_t i = 0; i < contacts->users.size(); i++) {
-            address = contacts->users[i]->address;
-            send(sock, m, strlen(m), 0);
-            cout<<"¡Enviado! Mensaje: "<< m <<'\n';
+        if (message->user->conect){
+            send(message->user->sock, m, strlen(m), 0);
+            cout<<"¡Enviado! Mensaje de "<<inet_ntoa(message->user->address.sin_addr)<< " : "<< m <<'\n';
+
+
         }
     }
 

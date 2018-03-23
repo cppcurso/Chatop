@@ -5,6 +5,7 @@ struct User {
     struct sockaddr_in address;
     string ip;
     int sock;
+    bool conect;
     User() {}
 
     User(string n, struct sockaddr_in a) : nick(n), address(a) {}

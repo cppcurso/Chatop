@@ -3,7 +3,7 @@ using namespace std;
 
 struct Message {
     string text;
-    User user;
+    User* user;
 
     string getMessage() {
         string m = "";

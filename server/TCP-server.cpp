@@ -6,12 +6,16 @@ void communication(int sock, NetworkManager* nm, Contacts* contacts){
     Message* m = new Message;
     while(true){
         m = nm->recieveMessage(sock);
-        if(m != NULL)
-            nm->sendMessage(m, sock, contacts);
-
-        else{
-             std::cout << "Contacto desconectado." << '\n';
-             return;
+        for (size_t i = 0; i < contacts->users.size(); i++) {
+            if(m != NULL){
+                m->user = contacts->users[i];
+                nm->sendMessage(m);
+            }
+            else{
+                contacts->users[i]->conect = false;
+                 std::cout << "Contacto desconectado." << '\n';
+                 return;
+            }
         }
     }
 }
@@ -31,7 +35,7 @@ int main(){
             thread* t = new thread(communication, sock, nm, contacts);
 
             threads.push_back(t);
-            std::cout << threads.size() << '\n';
+            std::cout << "hilos "<<threads.size() << '\n';
         }
     }
 }
